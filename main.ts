@@ -82,18 +82,18 @@ textList = [
 "did you know that when you take you dog for a walk it thinks that your going hunting! ",
 "did you know that there are over 40 different species of wolf!",
 "did you know that the first full moon in january is called a wolf moon!",
-"did you know that wolves have a longer snouts and dogs do! ",
+"did you know that wolves have a longer snouts than dogs do! ",
 "did you know that wolves have stronger jaws and larger teeth than dogs do!",
 "did you know that dogs have a rounder head than wolves do!",
 "did you know that dogs have shorter legs than wolves do!",
 "did you know that wolf pups open their eyes when they're two weeks old!",
-"did you know that wolves and dogs milk have a smell about a hundred times greater than our sense of smell!!",
+"did you know that wolves and dogs both have a smell about a hundred times greater than our sense of smell!!",
 "did you know that newborn wolf pups need their mom for body heat!",
-"did you know that each wolf cuz it's only unique howl!",
-"did you know that usually won't hunt outside of their grounds!",
+"did you know that each wolf has it's only unique howl!",
+"did you know that wolves usually won't hunt outside of their grounds!",
 "did you know that pups play with \"toys\" made of dead animal bones or a peace of its fur! ",
-"did you know that Elsa wolves walk with their tail and ears held high to show who's boss!",
-"did you know that wolves can roam as far as 12 miles in one day!"
+"did you know that alpha wolves walk with their tail and ears held high to show who's boss!",
+"did you know that wolves can run as far as 12 miles in one day!"
 ]
 // Keep track of which info string from textList should be displayed.  Starts counting at zero.
 infoIndex = 0
