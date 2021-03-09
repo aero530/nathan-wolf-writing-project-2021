@@ -16,11 +16,11 @@ function StartLevel () {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
     // Loop through each of the white blocks in the tile map.
-    for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
+    for (let value2 of tiles.getTilesByType(assets.tile`myTile`)) {
         // Remove the white block on the tile map and replace it with a transparent block.
-        tiles.setTileAt(value, assets.tile`transparency16`)
+        tiles.setTileAt(value2, assets.tile`transparency16`)
         // Create a sprite at this location on the map.
-        tiles.placeOnTile(createInfoSprite(), value)
+        tiles.placeOnTile(createInfoSprite(), value2)
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
