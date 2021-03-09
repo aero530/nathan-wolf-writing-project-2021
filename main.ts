@@ -10,26 +10,18 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function StartLevel () {
-    if (Curerent_levl == 0) {
-        tiles.setTilemap(tilemap`level0`)
-    } else if (Curerent_levl == 1) {
-        tiles.setTilemap(tilemap`level8`)
-    } else if (Curerent_levl == 2) {
-    	
-    } else if (Curerent_levl == 3) {
-    	
-    } else if (Curerent_levl == 4) {
-    	
-    } else if (Curerent_levl == 5) {
-    	
-    } else {
-        game.over(true, effects.blizzard)
-    }
+    tiles.setTilemap(tilemap`level0`)
     tiles.placeOnRandomTile(Nova, assets.tile`tile7`)
     for (let value of tiles.getTilesByType(assets.tile`tile7`)) {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
-    scene.cameraFollowSprite(Nova)
+    // Loop through each of the white blocks in the tile map.
+    for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
+        // Remove the white block on the tile map and replace it with a transparent block.
+        tiles.setTileAt(value, assets.tile`transparency16`)
+        // Create a sprite at this location on the map.
+        tiles.placeOnTile(createInfoSprite(), value)
+    }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     game.reset()
@@ -39,214 +31,59 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         Nova.vy = -115
     }
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`tile3`, function (sprite, location) {
-    Curerent_levl += 1
-    StartLevel()
+// Flip the player image so it is facing the correct direction
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (!(facingLeft)) {
+        facingLeft = true
+        Nova.image.flipX()
+    }
 })
+// Make an info block sprite
+function createInfoSprite () {
+    textBlock = sprites.create(assets.image`info block`, SpriteKind.info)
+    textBlock.z = 10
+    return textBlock
+}
+// Flip the player image so it is facing the correct direction
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (facingLeft) {
+        facingLeft = false
+        Nova.image.flipX()
+    }
+})
+// If the player falls onto the black bar at the bottom of the tile map then reset their position to the beginning of the map.  This does not reset the level, only the player's position.
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile2`, function (sprite, location) {
     Nova.setPosition(9, 5)
 })
-scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleRedCrystal, function (sprite, location) {
-    Curerent_levl += 1
-    StartLevel()
+sprites.onOverlap(SpriteKind.Player, SpriteKind.info, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    // Display which info block is displayed
+    // Display how many info blocks there are
+    // Put in a new line
+    game.showLongText("" + (infoIndex + 1) + " of " + textList.length + String.fromCharCode(10) + textList[infoIndex], DialogLayout.Full)
+    // Increment the counter that tells us which info string to show
+    infoIndex += 1
+    // If this was the last info block then end the game
+    if (infoIndex == textList.length) {
+        game.over(true, effects.blizzard)
+    }
 })
-let Curerent_levl = 0
+let textBlock: Sprite = null
+let facingLeft = false
 let Nova: Sprite = null
+let infoIndex = 0
+let textList: string[] = []
 game.setDialogTextColor(2)
+// Show instructions on how to play the game.
 game.showLongText("here's how to control the game. the A button makes you jump, the B button restarts the game, and when you move the joystick left you go left when you move the joystick right you go right and when you move the joystick up you jump.", DialogLayout.Full)
-scene.setBackgroundColor(6)
-scene.setBackgroundImage(img`
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666111111666666666661111111166666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666111111111116666666611111111111666666666666666666666666666666
-    6666666666661116666666666666111166666666666666666666666666666666666666666666666666666666666666666611111111111111116661111111111111116666666661111111666666666666
-    6666666666111111116666666661111111166666666666666666666666666666666666666666666666666666666666666111111111111111111111111111111111111166666611111111666666666666
-    6666666666111111111666666611111111111666666666666666666666666666666666666666666666666666666666661111111111111111111111111111111111111111166111111111166666666666
-    6666666611111111111166666111111111111116666666666666666666666666666666666666666666666666666666661111111111111111111111111111111111111111111111111111166666666666
-    6666666611111111111116666111111111111111666666666666666666666666666666666666666666666666666666611111111111111111111111111111111111111111111111111111166666666666
-    6666666111111111111111661111111111111111666666666666666666666666666666666666666666666666666666611111111111111111111111111111111111111111111111111111116666666666
-    6666666111111111111111611111111111111111166666666666666666666666666666666666666666666666666666611111111111111111111111111111111111111111111111111111116666666666
-    6666666111111111111111611111111111111111111666666666666666666666666666666666666666666666666666111111111111111111111111111111111111111111111111111111111666666666
-    6666666111111111111111111111111111111111111661111116666666666666666666666666666666666666666666111111111111111111111111111111111111111111111111111111111666666666
-    6666666111111111111111111111111111111111111111111111666666666666666666666666666666666666666666611111116666666666666666661111111111111111111111111111111666666666
-    6666666111111111111111111111111111111111111111111111166666666666666666666666666666666666666666111666666666666666666666666666661111111111111111111111111166666666
-    6666666111111111111111111111111111111111111111111111166666666666666666666666666666666666666666666666666666666666666666666666666666611111111111111111111166666666
-    6666666111111111111111111111111111111111111111111111166666666666666666666666666666666666666666666666666666666666666666666666666666666661111111111111111166666666
-    6666666111111111111111111111111111111111111111111111116666666666666666666666666666666666666666666666666666666666666666666666666666666666666111111111116666666666
-    6666666611111166111111111111111111111111111111111111116666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666116666666666666666666666666661111111111111111666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666611111111111666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
-    66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666ddd66666666666666666666666666666666666666
-    6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666ddddd6666666666666666666666666666666666666
-    666666666666666666666666666666666666666666666666dd66666666666666666666666666666666666666666666666666666666666666666dddddddddd66666666666666666666666666666666666
-    66666666666666666666666666666666666666666666666ddd6666666666666666666666666666666666666666666666666666666666666666dddddddddddddd66666666666666666666666666666666
-    6666666666666666666666666666666666666666666dddddddd6666666666666666666666666666666666666666666666666666666666666ddddddddddddddddddd66666666666666666666666666666
-    6666666666666666666666666666666666666666ddddddddddddd666666666666666666666666666666666666666666666666666666666ddddddddddddddddddddddd666666666666666666666666666
-    66666666666666666666666666666666666666dddddddddddddddd6666666666666666666666666666666666666666666666666666666dddddddddddddddddddddddddd6666666666666666666666666
-    6666666666666666666666666666666666666ddddddddddddddddddd6666666666666666666666666666666666666666666666666666ddddddddddddddddddddddddddddd66666666666666666666666
-    66666666666666666666666666666666666dddddddddddddddddddddd66666666666666666666666666666666666666666666666666dddddddddddddddddddddddddddddddd666666666666666666666
-    666666666666666666666666666666666ddddddddddddddddddddddddd666666666666666666666666666666666666666666666666dddddddddddddddddddddddddddddddddd66666666666666666666
-    66666666666666666666666666666666ddddddddddddddddddddddddddd6666666666666666666666666666666666666666666666dddddddddddddddddddddddddddddddddddd6666666666666666666
-    666666666666666666666666666666ddddddddddddddddddddddddddddddd6666666666666666666666666666666666666666666dddddddddddddddddddddddddddddddddddddd666666666666666666
-    6666666666666666666666666666dddddddddddddddddddddddddddddddddd66666666666666666666666666666666666666666dddddddddddddddddddddddddddddddddddddddd66666666666666666
-    66666666666666666666666666dddddddddddddddddddddddddddddddddddddd66666666666666666666666666666666666666ddddddddddddddddddddddddddddddddddddddddddd666666666666666
-    666666666666666666666666dddddddddddddddddddddddddddddddddddddddddd66666666666666666666666666666666666ddddddddddddddddddddddddddddddddddddddddddddd66666666666666
-    6666666666666666666666dddddddddddddddddddddddddddddddddddddddddddddd66666666666666666666666666666666ddddddddddddddddddddddddddddddddddddddddddddddd6666666666666
-    66666666666666666666ddddddddddddddddddddddddddddddddddddddddddddddddd6666666666666666666666666666666dddddddddddddddddddddddddddddddddddddddddddddddd666666666666
-    66666666666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666666666666666666666ddddddddddddddddddddddddddddddddddddddddddddddddd666666666666
-    666666666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666666666666666666dddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666
-    6666666666666ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd66666666666666666666666ddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666
-    66666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd666666666666666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666
-    666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd66666666666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666
-    6666666ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd666666666666666ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd66666666
-    66666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd666666
-    666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd666666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd6666
-    6ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd6666666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd666
-    ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd66666dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd66
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd666ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    `)
-Nova = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    1 . . . . . . . . . 1 . . . . . 
-    1 1 . . . . . . . 1 1 1 . . . . 
-    . 1 1 1 1 1 1 1 1 1 1 f 1 . . . 
-    . . 1 1 1 1 1 1 1 1 1 1 1 . . . 
-    . . 1 1 1 1 1 1 1 1 1 1 . . . . 
-    . . . 1 . . . . . 1 1 . . . . . 
-    . . . 1 . . . . . 1 . . . . . . 
-    . . . 1 . . . . . 1 . . . . . . 
-    `, SpriteKind.Player)
+// Define an array of strings.  There is one value for each fact.  There should be the same number of info blocks on the tile map as there are in this array.
+textList = ["Wolves have noses.", "Wolves have fur.", "Wolves have feet.", "Wolves are cute."]
+// Keep track of which info string from textList should be displayed.  Starts counting at zero.
+infoIndex = 0
+scene.setBackgroundImage(assets.image`background image`)
+Nova = sprites.create(assets.image`Nova`, SpriteKind.Player)
+facingLeft = false
 controller.moveSprite(Nova, 100, 0)
+Nova.ay = 200
+scene.cameraFollowSprite(Nova)
 StartLevel()
-for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
-    let text: Sprite = null
-    value = sprites.create(img`
-        f 5 5 5 5 5 5 f f 5 5 5 5 5 5 f 
-        5 f 5 5 5 5 5 f f 5 5 5 5 5 f 5 
-        5 5 f 5 5 5 5 f f 5 5 5 5 f 5 5 
-        5 5 5 f 5 5 5 f f 5 5 5 f 5 5 5 
-        5 5 5 5 f 5 5 f f 5 5 f 5 5 5 5 
-        5 5 5 5 5 f 5 f f 5 f 5 5 5 5 5 
-        5 5 5 5 5 5 f f f f 5 5 5 5 5 5 
-        f f f f f f f f f f f f f f f f 
-        f f f f f f f f f f f f f f f f 
-        5 5 5 5 5 5 f f f f 5 5 5 5 5 5 
-        5 5 5 5 5 f 5 f f 5 f 5 5 5 5 5 
-        5 5 5 5 f 5 5 f f 5 5 f 5 5 5 5 
-        5 5 5 f 5 5 5 f f 5 5 5 f 5 5 5 
-        5 5 f 5 5 5 5 f f 5 5 5 5 f 5 5 
-        5 f 5 5 5 5 5 f f 5 5 5 5 5 f 5 
-        f 5 5 5 5 5 5 f f 5 5 5 5 5 5 f 
-        `, SpriteKind.info)
-    tiles.placeOnTile(text, value)
-    tiles.setTileAt(value, assets.tile`transparency16`)
-}
-Curerent_levl = 0
-game.onUpdate(function () {
-    Nova.setImage(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        1 . . . . . . . . . 1 . . . . . 
-        1 1 . . . . . . . 1 1 1 . . . . 
-        . 1 1 1 1 1 1 1 1 1 1 f 1 . . . 
-        . . 1 1 1 1 1 1 1 1 1 1 1 . . . 
-        . . 1 1 1 1 1 1 1 1 1 1 . . . . 
-        . . . 1 . . . . . 1 1 . . . . . 
-        . . . 1 . . . . . 1 . . . . . . 
-        . . . 1 . . . . . 1 . . . . . . 
-        `)
-    if (true) {
-        Nova.ay = 200
-    } else {
-        Nova.ay = 200
-    }
-    if (Nova.vx < 0 || Nova.isHittingTile(CollisionDirection.Left)) {
-        Nova.image.flipX()
-        Nova.setImage(Nova.image)
-    }
-})
