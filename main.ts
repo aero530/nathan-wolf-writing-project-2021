@@ -73,6 +73,42 @@ let facingLeft = false
 let Nova: Sprite = null
 let infoIndex = 0
 let textList: string[] = []
+game.setDialogFrame(img`
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    2 4 4 4 4 4 4 4 4 4 4 4 4 4 2 
+    2 4 5 5 5 5 5 5 5 5 5 5 5 4 2 
+    2 4 5 7 7 7 7 7 7 7 7 7 5 4 2 
+    2 4 5 7 8 8 8 8 8 8 8 7 5 4 2 
+    2 4 5 7 8 1 1 1 1 1 8 7 5 4 2 
+    2 4 5 7 8 1 1 1 1 1 8 7 5 4 2 
+    2 4 5 7 8 1 1 1 1 1 8 7 5 4 2 
+    2 4 5 7 8 1 1 1 1 1 8 7 5 4 2 
+    2 4 5 7 8 1 1 1 1 1 8 7 5 4 2 
+    2 4 5 7 8 8 8 8 8 8 8 7 5 4 2 
+    2 4 5 7 7 7 7 7 7 7 7 7 5 4 2 
+    2 4 5 5 5 5 5 5 5 5 5 5 5 4 2 
+    2 4 4 4 4 4 4 4 4 4 4 4 4 4 2 
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+    `)
+game.setDialogTextColor(2)
+game.showLongText("welcome to Wolf facts", DialogLayout.Full)
+game.setDialogFrame(img`
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+    `)
 game.setDialogTextColor(2)
 // Show instructions on how to play the game.
 game.showLongText("here's how to control the game. the A button makes you jump, the B button restarts the game, and when you move the joystick left you go left when you move the joystick right you go right and when you move the joystick up you jump.", DialogLayout.Full)
