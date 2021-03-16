@@ -4,6 +4,7 @@ namespace SpriteKind {
     export const taco = SpriteKind.create()
     export const info = SpriteKind.create()
     export const Compare_and_contrast = SpriteKind.create()
+    export const cac = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Nova.vy == 0) {
@@ -56,6 +57,10 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile2`, function (sprite, location) {
     Nova.setPosition(9, 5)
 })
+// If the player falls onto the black bar at the bottom of the tile map then reset their position to the beginning of the map.  This does not reset the level, only the player's position.
+scene.onOverlapTile(SpriteKind.Compare_and_contrast, assets.tile`myTile0`, function (sprite, location) {
+    wolf.setPosition(39, 5)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.info, function (sprite, otherSprite) {
     otherSprite.destroy()
     // Display which info block is displayed
@@ -71,6 +76,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.info, function (sprite, otherSpr
 })
 let textBlock: Sprite = null
 let facingLeft = false
+let wolf: Sprite = null
 let Nova: Sprite = null
 let infoIndex = 0
 let textList: string[] = []
@@ -136,7 +142,26 @@ textList = [
 infoIndex = 0
 scene.setBackgroundImage(assets.image`background image`)
 Nova = sprites.create(assets.image`Nova`, SpriteKind.Player)
-let wolf = sprites.create(assets.image`wolf`, SpriteKind.Compare_and_contrast)
+wolf = sprites.create(assets.image`wolf`, SpriteKind.cac)
+let cac = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Compare_and_contrast)
+cac.setPosition(39, 5)
 facingLeft = false
 controller.moveSprite(Nova, 100, 0)
 Nova.ay = 200
