@@ -3,6 +3,7 @@ namespace SpriteKind {
     export const Cat = SpriteKind.create()
     export const taco = SpriteKind.create()
     export const info = SpriteKind.create()
+    export const Compare_and_contrast = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Nova.vy == 0) {
@@ -91,7 +92,7 @@ game.setDialogFrame(img`
     2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
     `)
 game.setDialogTextColor(2)
-game.showLongText("welcome to Wolf facts", DialogLayout.Full)
+game.showLongText("welcome to dog facts", DialogLayout.Full)
 game.setDialogFrame(img`
     1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
     1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
@@ -114,27 +115,28 @@ game.setDialogTextColor(2)
 game.showLongText("here's how to control the game. the A button makes you jump, the B button restarts the game, and when you move the joystick left you go left when you move the joystick right you go right and when you move the joystick up you jump.", DialogLayout.Full)
 // Define an array of strings.  There is one value for each fact.  There should be the same number of info blocks on the tile map as there are in this array.
 textList = [
-"did you know that wolves don't bark and that that is the language of dog! ",
-"did you know that when you take you dog for a walk it thinks that your going hunting! ",
-"did you know that there are over 40 different species of wolf!",
-"did you know that the first full moon in january is called a wolf moon!",
-"did you know that wolves have a longer snouts than dogs do! ",
-"did you know that wolves have stronger jaws and larger teeth than dogs do!",
-"did you know that dogs have a rounder head than wolves do!",
-"did you know that dogs have shorter legs than wolves do!",
-"did you know that wolf pups open their eyes when they're two weeks old!",
-"did you know that wolves and dogs both have a smell about a hundred times greater than our sense of smell!!",
-"did you know that newborn wolf pups need their mom for body heat!",
-"did you know that each wolf has it's only unique howl!",
-"did you know that wolves usually won't hunt outside of their grounds!",
-"did you know that pups play with \"toys\" made of dead animal bones or a peace of its fur! ",
-"did you know that alpha wolves walk with their tail and ears held high to show who's boss!",
-"did you know that wolves can run as far as 12 miles in one day!"
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+""
 ]
 // Keep track of which info string from textList should be displayed.  Starts counting at zero.
 infoIndex = 0
 scene.setBackgroundImage(assets.image`background image`)
 Nova = sprites.create(assets.image`Nova`, SpriteKind.Player)
+let wolf = sprites.create(assets.image`wolf`, SpriteKind.Compare_and_contrast)
 facingLeft = false
 controller.moveSprite(Nova, 100, 0)
 Nova.ay = 200
