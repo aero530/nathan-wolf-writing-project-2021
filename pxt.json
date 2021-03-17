@@ -4,7 +4,6 @@
     "dependencies": {
         "device": "*",
         "animation": "*",
-        "Color Fading": "github:jwunderl/pxt-color#v0.2.0",
         "tilemaps": "github:microsoft/pxt-tilemaps#v1.10.0"
     },
     "files": [

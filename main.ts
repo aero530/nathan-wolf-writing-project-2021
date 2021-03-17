@@ -23,8 +23,16 @@ function StartLevel () {
         tiles.setTileAt(value2, assets.tile`transparency16`)
         // Create a sprite at this location on the map.
         tiles.placeOnTile(createInfoSprite(), value2)
+        tiles.placeOnRandomTile(wolf, assets.tile`myTile0`)
+        for (let value of tiles.getTilesByType(assets.tile`myTile0`)) {
+            tiles.setTileAt(value, assets.tile`transparency16`)
+        }
     }
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.cac, function (sprite, otherSprite) {
+    // Show instructions on how to play the game.
+    game.showLongText("cac", DialogLayout.Full)
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     game.reset()
 })
@@ -56,10 +64,6 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 // If the player falls onto the black bar at the bottom of the tile map then reset their position to the beginning of the map.  This does not reset the level, only the player's position.
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tile2`, function (sprite, location) {
     Nova.setPosition(9, 5)
-})
-// If the player falls onto the black bar at the bottom of the tile map then reset their position to the beginning of the map.  This does not reset the level, only the player's position.
-scene.onOverlapTile(SpriteKind.Compare_and_contrast, assets.tile`myTile0`, function (sprite, location) {
-    wolf.setPosition(39, 5)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.info, function (sprite, otherSprite) {
     otherSprite.destroy()
@@ -143,25 +147,7 @@ infoIndex = 0
 scene.setBackgroundImage(assets.image`background image`)
 Nova = sprites.create(assets.image`Nova`, SpriteKind.Player)
 wolf = sprites.create(assets.image`wolf`, SpriteKind.cac)
-let cac = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Compare_and_contrast)
-cac.setPosition(39, 5)
+wolf.setPosition(139, 15)
 facingLeft = false
 controller.moveSprite(Nova, 100, 0)
 Nova.ay = 200
