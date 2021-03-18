@@ -32,6 +32,9 @@ function StartLevel () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.cac, function (sprite, otherSprite) {
     // Show instructions on how to play the game.
     game.showLongText("cac", DialogLayout.Full)
+    if (true) {
+        wolf.destroy()
+    }
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     game.reset()
@@ -125,12 +128,12 @@ game.setDialogTextColor(2)
 game.showLongText("here's how to control the game. the A button makes you jump, the B button restarts the game, and when you move the joystick left you go left when you move the joystick right you go right and when you move the joystick up you jump.", DialogLayout.Full)
 // Define an array of strings.  There is one value for each fact.  There should be the same number of info blocks on the tile map as there are in this array.
 textList = [
-"",
-"",
-"",
-"",
-"",
-"",
+"Fun fact! when you take your dog for a walk they think you're going hunting.",
+"One dog job is that huskies who are sled dogs who help people get around really really snowy areas when there is no other way to get there and when there are no other sources of transportation available. For example in the year 1925 there was an epidemic calld diphtheria in Nome that would kill people kind of like Covid-19 does and the only medicine was 600 miles away.  The only plane that could get it there was broken down.  So then huskies and sled dogs came in and delivered the medicine to Nome. ",
+"One dog job is that labrador retrievers and golden retrievers are hunting dogs that retrieve hunted items for the people who hunted them.  For example if someone hunted a bird then the lab would go and find it and point to it with its paw and or its nose which tells the hunter where the bird landed.",
+"One dog job is that Australian Cattle dogs herd flocks of animals and keep them safe from danger.  They nip at them and stare at them to get them to move. They might herd sheep, cows and goats.  They have lots of energy and like to do this work.",
+"Fun fact! in the year 2005 in the hurricane named Katrina a Labrador Retriever help a drowning man get out of the water before being rescued herself and that's how she got the name Katrina.",
+"Did you know that Kasha a german shepherd rides a ski lift and helps ski patrol people on the ski hill.",
 "",
 "",
 "",
