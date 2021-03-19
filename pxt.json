@@ -4,7 +4,8 @@
     "dependencies": {
         "device": "*",
         "animation": "*",
-        "tilemaps": "github:microsoft/pxt-tilemaps#v1.10.0"
+        "tilemaps": "github:microsoft/pxt-tilemaps#v1.10.0",
+        "arcade-story": "github:microsoft/arcade-storytelling#v1.0.1"
     },
     "files": [
         "main.blocks",
