@@ -511,17 +511,10 @@ textList = [
 "One dog job is that labrador retrievers and golden retrievers are hunting dogs that retrieve hunted items for the people who hunted them.  For example if someone hunted a bird then the lab would go and find it and point to it with its paw and or its nose which tells the hunter where the bird landed.",
 "One dog job is that Australian Cattle dogs herd flocks of animals and keep them safe from danger.  They nip at them and stare at them to get them to move. They might herd sheep, cows and goats.  They have lots of energy and like to do this work.",
 "Fun fact! In the year 2005 in the hurricane named Katrina a Labrador Retriever helped a drowning man get out of the water before being rescued herself and that's how she got the name Katrina.",
-"Did you know that Kasha a german shepherd rides a ski lift and helps ski patrol people on the ski hill.",
+"Did you know that Kasha a german shepherd rides a ski lift and helps ski patrol people on the ski hill?",
 "It is important to keep your dog healthy.  There are some things you need to do every day that you might not have thought of.  Be sure to brush them.  Look at their feet especially after a walk. Give your dog a daily checkup.",
 "Fun fact! Dogs have 3 eyelids on each eye.",
-"",
-"",
-"",
-"",
-"",
-"",
-"",
-""
+"Did you know that dogs have personalities just like humans?"
 ]
 // Keep track of which info string from textList should be displayed.  Starts counting at zero.
 infoIndex = 0
